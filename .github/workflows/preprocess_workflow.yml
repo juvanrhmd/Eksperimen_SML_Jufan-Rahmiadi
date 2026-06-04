@@ -4,11 +4,15 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: # Memungkinkan Anda memicu workflow secara manual di GitHub
+  workflow_dispatch: 
 
 jobs:
   preprocess:
     runs-on: ubuntu-latest
+
+    # Menghilangkan warning deprecation Node.js 20 di environment tahun 2026
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
     - name: Checkout Repository
@@ -17,7 +21,7 @@ jobs:
     - name: Set up Python 3.12.7
       uses: actions/setup-python@v5
       with:
-        python-python-version: '12.12.7' # Sesuai rekomendasi kelas
+        python-version: '3.12.7' # Sudah diperbaiki dari typo sebelumnya
 
     - name: Install Dependencies
       run: |
@@ -33,5 +37,5 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add preprocessing/Breast_Cancer_Raw_preprocessing/breast_cancer_clean.csv
+        git add preprocessing/namadataset_preprocessing/breast_cancer_clean.csv
         git diff --quiet && git diff --staged --quiet || (git commit -m "Automated update: Preprocessed dataset via GitHub Actions" && git push)
