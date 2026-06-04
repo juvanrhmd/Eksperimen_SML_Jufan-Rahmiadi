@@ -37,5 +37,5 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add preprocessing/namadataset_preprocessing/breast_cancer_clean.csv
+        git add preprocessing/Breast_Cancer_Raw_preprocessing/breast_cancer_clean.csv
         git diff --quiet && git diff --staged --quiet || (git commit -m "Automated update: Preprocessed dataset via GitHub Actions" && git push)
