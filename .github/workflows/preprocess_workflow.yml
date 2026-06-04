@@ -1,0 +1,37 @@
+name: Data Preprocessing Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Memungkinkan Anda memicu workflow secara manual di GitHub
+
+jobs:
+  preprocess:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.12.7
+      uses: actions/setup-python@v5
+      with:
+        python-python-version: '12.12.7' # Sesuai rekomendasi kelas
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas numpy scikit-learn
+
+    - name: Run Preprocessing Script
+      run: |
+        cd preprocessing
+        python automate_Jufan-Rahmiadi.py
+
+    - name: Commit and Push Clean Dataset
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add preprocessing/Breast_Cancer_Raw_preprocessing/breast_cancer_clean.csv
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Automated update: Preprocessed dataset via GitHub Actions" && git push)
